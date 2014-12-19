@@ -14,16 +14,19 @@ from selenium.webdriver.common.keys import Keys
 # If this script no longer fetches any results check the XPath
 
 def parse_args():
+    """ Script arguments """
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--domain', help='Enter the domain')
     return parser.parse_args()
 
 def start_browser():
+    """ Start the browser """
     br = webdriver.Firefox()
     br.implicitly_wait(10)
     return br
 
 def get_ua():
+    """ Get a random user agent form this list for each request """
     ua_list = ['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36',
                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36',
                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14',
@@ -34,6 +37,7 @@ def get_ua():
     return ua
 
 def open_page(br, domain):
+    """ Open URLs each in its own tab """
     g_search_base = 'https://www.google.com/webhp?#num=100&start=0&q='
     google_queries = ('+intitle:index.of', # Dir indexing
                       '+ext:xml+|+ext:conf+|+ext:cnf+|+ext:reg+|+ext:inf+|+ext:rdp+|+ext:cfg+|+ext:txt+|+ext:ora+|+ext:ini', # config
@@ -59,7 +63,7 @@ def open_page(br, domain):
 
 def main():
     args = parse_args()
-    if args.domain.startwith('http'):
+    if args.domain.startswith('http'):
         sys.exit('[*] Domain arguments must be in example.com form, not http://example.com')
     br = start_browser()
     if not args.domain:
