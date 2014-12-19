@@ -34,16 +34,23 @@ def get_ua():
     return ua
 
 def open_page(br, domain):
-    queries = ('+intitle:index.of', # Dir indexing
-               '+ext:xml+|+ext:conf+|+ext:cnf+|+ext:reg+|+ext:inf+|+ext:rdp+|+ext:cfg+|+ext:txt+|+ext:ora+|+ext:ini', # config
-               '+ext:sql+|+ext:dbf+|+ext:mdb', #d db files
-               '+ext:log', # logs
-               '+ext:bkf+|+ext:bkp+|+ext:bak+|+ext:old+|+ext:backup', # backups
-               '+intext:"sql+syntax+near"+|+intext:"syntax+error+has+occurred"+|+intext:"incorrect+syntax+near"+|+intext:"unexpected+end+of+SQL+command"+|+intext:"Warning:+mysql_connect()"+|+intext:"Warning:+mysql_query()"+|+intext:"Warning:+pg_connect()"', # sql errors
-               '+ext:doc+|+ext:docx+|+ext:odt+|+ext:pdf+|+ext:rtf+|+ext:sxw+|+ext:psw+|+ext:ppt+|+ext:pptx+|+ext:pps+|+ext:csv') # docs
-    urls = ['https://www.google.com/webhp?#num=100&start=0&q=site:'+domain+q for q in queries]
+    g_search_base = 'https://www.google.com/webhp?#num=100&start=0&q='
+    google_queries = ('+intitle:index.of', # Dir indexing
+                      '+ext:xml+|+ext:conf+|+ext:cnf+|+ext:reg+|+ext:inf+|+ext:rdp+|+ext:cfg+|+ext:txt+|+ext:ora+|+ext:ini', # config
+                      '+ext:sql+|+ext:dbf+|+ext:mdb', #d db files
+                      '+ext:log', # logs
+                      '+ext:bkf+|+ext:bkp+|+ext:bak+|+ext:old+|+ext:backup', # backups
+                      '+intext:"sql+syntax+near"+|+intext:"syntax+error+has+occurred"+|+intext:"incorrect+syntax+near"+|+intext:\
+                      "unexpected+end+of+SQL+command"+|+intext:"Warning:+mysql_connect()"+|+intext:"Warning:+mysql_query()"+|+intext:"Warning:+pg_connect()"', # sql errors
+                      '+ext:doc+|+ext:docx+|+ext:odt+|+ext:pdf+|+ext:rtf+|+ext:sxw+|+ext:psw+|+ext:ppt+|+ext:pptx+|+ext:pps+|+ext:csv') # docs
+    # Make Google queries
+    urls = [g_search_base+'site:'+domain+q for q in google_queries]
+    # Make pastebin searches
+    urls.append(g_search_base+'site:pastebin.com+'+domain)
+    # Add quotes around domain for pastebin search
+    urls.append(g_search_base+'site:pastebin.com+"'+domain+'"')
+    
     for u in urls:
-        print u
         br.get(u)
         # Just grab an element that exists in all pages
         html_elem = br.find_element_by_tag_name('html')
