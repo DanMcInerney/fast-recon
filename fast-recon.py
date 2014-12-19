@@ -64,7 +64,7 @@ def open_page(br, domain):
 def main():
     args = parse_args()
     if args.domain.startswith('http'):
-        sys.exit('[*] Domain arguments must be in example.com form, not http://example.com')
+        sys.exit('[*] Do: -d example.com  Do not: -d http://example.com')
     br = start_browser()
     if not args.domain:
         sys.exit('[!] Enter a domain to perform the recon on: ./fast-recon.py -d "danmcinerney.org"')
