@@ -46,6 +46,7 @@ def open_page(br, domain):
                       '+ext:bkf+|+ext:bkp+|+ext:bak+|+ext:old+|+ext:backup', # backups
                       '+intext:"sql+syntax+near"+|+intext:"syntax+error+has+occurred"+|+intext:"incorrect+syntax+near"+|+intext:\
                       "unexpected+end+of+SQL+command"+|+intext:"Warning:+mysql_connect()"+|+intext:"Warning:+mysql_query()"+|+intext:"Warning:+pg_connect()"', # sql errors
+                      '+filetype:asmx+|+inurl:jws?wsdl+|+filetype:jws+|+inurl:asmx?wsdl', # wsdls
                       '+ext:doc+|+ext:docx+|+ext:odt+|+ext:pdf+|+ext:rtf+|+ext:sxw+|+ext:psw+|+ext:ppt+|+ext:pptx+|+ext:pps+|+ext:csv') # docs
     # Make Google queries
     urls = [g_search_base+'site:'+domain+q for q in google_queries]
