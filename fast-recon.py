@@ -11,6 +11,10 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.webdriver.common.keys import Keys
 
+import os
+
+os.environ['MOZ_FORCE_DISABLE_E10S'] = '1'
+
 # If this script no longer fetches any results check the XPath
 
 def parse_args():
@@ -54,13 +58,18 @@ def open_page(br, domain):
     urls.append(g_search_base+'site:pastebin.com+'+domain)
     # Add quotes around domain for pastebin search
     urls.append(g_search_base+'site:pastebin.com+"'+domain+'"')
-    
+
+    tabHandle = 0
     for u in urls:
+        br.switch_to_window(br.window_handles[tabHandle])
         br.get(u)
         # Just grab an element that exists in all pages
         html_elem = br.find_element_by_tag_name('html')
         if u != urls[-1]:
-            html_elem.send_keys(Keys.CONTROL + 't') 
+            html_elem.send_keys(Keys.CONTROL + 't')
+        tabHandle+=1
+	# time.sleep(10) # Optional
+    br.switch_to_window(br.window_handles[0])
 
 def main():
     args = parse_args()
